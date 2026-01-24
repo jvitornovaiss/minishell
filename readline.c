@@ -11,3 +11,13 @@ int main(void)
     free(s);
     return (0);
 }
+
+typedef struct s_joao
+{
+    /* data */
+}t_joao;
+
+
+t_joao *estrtura;
+
+malloc()
