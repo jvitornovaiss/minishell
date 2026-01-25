@@ -36,7 +36,7 @@ char	*append_char(char *str, char c)
 	return (new_str);
 }
 
-char	*expand_and_join(char *new_str, char *str, int *i, char **env, int state)
+char	*expand_and_join(char *new_str, char *str, int *i, char **env, int state) //preciso criar uma strcut para cá
 {
 	char	*var_name;
 	char	*var_value;
