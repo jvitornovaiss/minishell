@@ -1,0 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
+/*   Updated: 2026/01/24 22:28:54 by rida-cos         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# include "libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+
+typedef enum e_token_type {
+	WORD,
+	PIPE,
+	RED_OUT,
+	RED_IN,
+	APPEND,
+	HERE_DOC,
+	ENV
+} t_token_type;
+
+typedef enum e_state{
+	OUT_QUOTE,
+	IN_SQUOTE,
+	IN_DQUOTE
+}	t_state;
+
+typedef struct s_token {
+	char			*value;
+	t_token_type	type;
+	struct s_token	*next;
+} t_token;
+
+//libft/libft.c
+size_t	ft_strlen(const char *str);
+
+//utils.c
+t_token	*create_token(char *value, t_token_type type);
+int		is_space(char c);
+int		is_operator(char c);
+void	free_tokens(t_token *head);
+
+//lexer.c
+void	add_token(t_token *new_token, t_token **head, int *i);
+void	handler_redirection(char *input, t_token **head, int *i);
+void	handle_word(char *input, t_token **head, int *i);
+t_token	*lexer(char *input);
+
+
+#endif
