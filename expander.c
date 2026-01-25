@@ -12,16 +12,6 @@
 
 #include "minishell.h"
 
-char *extract_var_name(char *str)
-{
-	int len;
-	
-	len = 0;
-	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
-		len++;
-	return (ft_substr(str, 0, len));
-}
-
 char	*append_char(char *str, char c)
 {
 	char	*new_str;
@@ -46,11 +36,11 @@ char	*append_char(char *str, char c)
 	return (new_str);
 }
 
-char *expand_and_join(char *new_str, char *str, int *i, char **env)
+char	*expand_and_join(char *new_str, char *str, int *i, char **env, int state)
 {
-	char *var_name;
-	char *var_value;
-	char *temp;
+	char	*var_name;
+	char	*var_value;
+	char	*temp;
 
 	(void)env; //remover
 	(*i)++;
@@ -63,12 +53,13 @@ char *expand_and_join(char *new_str, char *str, int *i, char **env)
 	{
 		var_name = extract_var_name(&str[*i]);
 		*i += ft_strlen(var_name); //para pular o nome da variável
-		if (getenv(var_name)) //tratativa para lidar com o retorno do env que é estático
+		if (getenv(var_name)) //usar funcao get_env
 			var_value = ft_strdup(getenv(var_name));
 		else
 			var_value = ft_strdup("");
 		free(var_name);
 	}
+	prepare_to_split(var_value, state); //lOGICA PARA RETOKENIZAR
 	temp = ft_strjoin(new_str, var_value);
 	free(new_str);
 	free(var_value);
@@ -88,7 +79,7 @@ char	*handler_expansion(char *str, char **env)
 	{
 		state = update_state(str[i], state);
 		if (str[i] == '$' && state != IN_SQUOTE && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'))
-			new_str = expand_and_join(new_str, str, &i, env);
+			new_str = expand_and_join(new_str, str, &i, env, state);
 		else
 		{
 			new_str = append_char(new_str, str[i]);

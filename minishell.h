@@ -27,7 +27,7 @@ typedef enum e_token_type {
 	APPEND,
 	HERE_DOC,
 	ENV
-} t_token_type;
+}	t_token_type;
 
 typedef enum e_state{
 	OUT_QUOTE,
@@ -39,7 +39,7 @@ typedef struct s_token {
 	char			*value;
 	t_token_type	type;
 	struct s_token	*next;
-} t_token;
+}	t_token;
 
 //libft/libft.c
 size_t	ft_strlen(const char *str);
@@ -49,9 +49,8 @@ t_token	*create_token(char *value, t_token_type type);
 int		is_space(char c);
 int		is_operator(char c);
 void	free_tokens(t_token *head);
-int update_state(char c, int state);
-char *clean_quotes(char *str);
-
+int		update_state(char c, int state);
+char	*clean_quotes(char *str);
 
 //lexer.c
 void	add_token(t_token *new_token, t_token **head, int *i);
@@ -60,10 +59,13 @@ void	handle_word(char *input, t_token **head, int *i);
 t_token	*lexer(char *input);
 
 //expander.c
-char	*extract_var_name(char *str);
 char	*append_char(char *str, char c);
-char	*expand_and_join(char *new_str, char *str, int *i, char **env);
+char	*expand_and_join(char *new_str, char *str, int *i, char **env, int state);
 char	*handler_expansion(char *str, char **env);
 void	expander(t_token *tokens, char **env);
+
+//expander_utils.c
+char	*extract_var_name(char *str);
+void	prepare_to_split(char *var_value, int state);
 
 #endif

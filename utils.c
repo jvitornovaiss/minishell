@@ -14,8 +14,8 @@
 
 t_token	*create_token(char *value, t_token_type type)
 {
-	t_token *node;
-	
+	t_token	*node;
+
 	node = malloc(sizeof(t_token));
 	if (!node)
 		return (NULL);
@@ -35,9 +35,9 @@ int	is_operator(char c)
 	return (c == '|' || c == '<' || c == '>');
 }
 
-void free_tokens(t_token *head)
+void	free_tokens(t_token *head)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	while (head)
 	{
@@ -49,42 +49,14 @@ void free_tokens(t_token *head)
 	}
 }
 
-int update_state(char c, int state)
+int	update_state(char c, int state)
 {
-    if (c == '\'' && state == OUT_QUOTE)
-            state = IN_SQUOTE;
-    else if (c == '\"' && state == OUT_QUOTE)
-            state = IN_DQUOTE;
-    else if ((c == '\'' && state == IN_SQUOTE)|| (c == '\"' && state == IN_DQUOTE))
-            state = OUT_QUOTE;
-    return (state);
-}
-
-char *clean_quotes(char *str)
-{
-    char    *new;
-    int     i;
-    int     j;
-    t_state state;
-
-    new = malloc(sizeof(char) * (ft_strlen(str) + 1));
-    i = 0;
-    j = 0;
-    state = OUT_QUOTE;
-    while (str[i])
-    {
-        if (state == OUT_QUOTE && str[i] == '\'')
-            state = IN_SQUOTE;
-        else if (state == OUT_QUOTE && str[i] == '\"')
-            state = IN_DQUOTE;
-        else if (state == IN_SQUOTE && str[i] == '\'')
-            state = OUT_QUOTE;
-        else if (state == IN_DQUOTE && str[i] == '\"')
-            state = OUT_QUOTE;
-        else
-            new[j++] = str[i]; // Só copia se não for a aspa de controle
-        i++;
-    }
-    new[j] = '\0';
-    return (new);
+	if (c == '\'' && state == OUT_QUOTE)
+			state = IN_SQUOTE;
+	else if (c == '\"' && state == OUT_QUOTE)
+			state = IN_DQUOTE;
+	else if ((c == '\'' && state == IN_SQUOTE)
+		|| (c == '\"' && state == IN_DQUOTE))
+			state = OUT_QUOTE;
+	return (state);
 }

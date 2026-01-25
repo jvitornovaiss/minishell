@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
 	t_token	*tokens;
@@ -21,21 +21,20 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	(void)envp;
-
 	while (1)
 	{
 		input = readline("minishell > ");
 		if (!input)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		tokens = lexer(input);
 		if (strcmp(input, "exit") == 0)
 		{
 			free_tokens(tokens);
 			free(input);
-			break;
+			break ;
 		}
 		temp = tokens;
 		printf("\n---ANTES DE EXPANDIR---\n");
