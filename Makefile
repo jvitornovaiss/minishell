@@ -5,7 +5,8 @@ CFLAGS = -g -Wall -Wextra -Werror -Ilibft -Iincludes
 
 SRC = parsing.c \
 		lexer.c \
-		utils.c
+		utils.c \
+		expander.c
 
 OBJ = $(SRC:.c=.o)
 

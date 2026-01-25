@@ -14,10 +14,10 @@
 
 void	add_token(t_token *new_token, t_token **head, int *i)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	if (!new_token)
-		return;
+		return ;
 	if (*head == NULL)
 		*head = new_token;
 	else
@@ -31,7 +31,7 @@ void	add_token(t_token *new_token, t_token **head, int *i)
 		*i += ft_strlen(new_token->value);
 }
 
-void handler_redirection(char *input, t_token **head, int *i)
+void	handler_redirection(char *input, t_token **head, int *i)
 {
 	if (input[*i] == '>')
 	{
@@ -49,7 +49,7 @@ void handler_redirection(char *input, t_token **head, int *i)
 	}
 }
 
-void handle_word(char *input, t_token **head, int *i)
+void	handle_word(char *input, t_token **head, int *i)
 {
 	int		start;
 	t_state	state;
@@ -89,10 +89,10 @@ void handle_word(char *input, t_token **head, int *i)
 	add_token(create_token(ft_substr(input, start, *i - start), WORD), head, NULL);
 }
 
-t_token *lexer(char *input)
+t_token	*lexer(char *input)
 {
-	t_token *head;
-	int     i;
+	t_token	*head;
+	int		i;
 
 	head = NULL;
 	i = 0;
@@ -101,8 +101,7 @@ t_token *lexer(char *input)
 		while (input[i] && is_space(input[i]))
 			i++;
 		if (!input[i])
-            break;
-		
+			break ;
 		if (input[i] == '|')
 			add_token(create_token(ft_strdup("|"), PIPE), &head, &i);
 		else if (input[i] == '<' || input[i] == '>')

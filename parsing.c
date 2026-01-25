@@ -38,12 +38,21 @@ int main(int argc, char **argv, char **envp)
 			break;
 		}
 		temp = tokens;
+		printf("\n---ANTES DE EXPANDIR---\n");
 		while (temp)
 		{
 			printf("Value: %s\tType: %d\n", temp->value, temp->type);
 			temp = temp->next;
 		}
-		//printf("%s\n", input);
+		temp = tokens;
+		expander(temp, envp);
+		temp = tokens;
+		printf("\n---APÓS EXPANDIR---\n");
+		while (temp)
+		{
+			printf("Value: %s\tType: %d\n", temp->value, temp->type);
+			temp = temp->next;
+		}
 		free_tokens(tokens);
 		free(input);
 	}

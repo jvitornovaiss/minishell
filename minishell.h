@@ -49,6 +49,9 @@ t_token	*create_token(char *value, t_token_type type);
 int		is_space(char c);
 int		is_operator(char c);
 void	free_tokens(t_token *head);
+int update_state(char c, int state);
+char *clean_quotes(char *str);
+
 
 //lexer.c
 void	add_token(t_token *new_token, t_token **head, int *i);
@@ -56,5 +59,11 @@ void	handler_redirection(char *input, t_token **head, int *i);
 void	handle_word(char *input, t_token **head, int *i);
 t_token	*lexer(char *input);
 
+//expander.c
+char	*extract_var_name(char *str);
+char	*append_char(char *str, char c);
+char	*expand_and_join(char *new_str, char *str, int *i, char **env);
+char	*handler_expansion(char *str, char **env);
+void	expander(t_token *tokens, char **env);
 
 #endif

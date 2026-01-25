@@ -49,6 +49,17 @@ void free_tokens(t_token *head)
 	}
 }
 
+int update_state(char c, int state)
+{
+    if (c == '\'' && state == OUT_QUOTE)
+            state = IN_SQUOTE;
+    else if (c == '\"' && state == OUT_QUOTE)
+            state = IN_DQUOTE;
+    else if ((c == '\'' && state == IN_SQUOTE)|| (c == '\"' && state == IN_DQUOTE))
+            state = OUT_QUOTE;
+    return (state);
+}
+
 char *clean_quotes(char *str)
 {
     char    *new;
