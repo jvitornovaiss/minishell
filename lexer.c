@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:45:52 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/24 23:14:36 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/26 00:25:46 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,36 +49,43 @@ void	handler_redirection(char *input, t_token **head, int *i)
 	}
 }
 
+static int	get_word_end(char *input, int i, t_state *state)
+{
+	while (input[i])
+	{
+		if (*state == OUT_QUOTE)
+		{
+			if (input[i] == '\'')
+				*state = IN_SQUOTE;
+			else if (input[i] == '\"')
+				*state = IN_DQUOTE;
+			else if (is_space(input[i]) || is_operator(input[i]))
+				break ;
+		}
+		else if (*state == IN_SQUOTE)
+		{
+			if (input[i] == '\'')
+				*state = OUT_QUOTE;
+		}
+		else if (*state == IN_DQUOTE)
+		{
+			if (input[i] == '\"')
+				*state = OUT_QUOTE;
+		}
+		i++;
+	}
+	return (i);
+}
+
 void	handle_word(char *input, t_token **head, int *i)
 {
 	int		start;
+	int		end;
 	t_state	state;
 
-	start = *i;
 	state = OUT_QUOTE;
-	while (input[*i])
-	{
-		if (state == OUT_QUOTE)
-		{
-			if (input[*i] == '\'')
-				state = IN_SQUOTE;
-			else if (input[*i] == '\"')
-				state = IN_DQUOTE;
-			else if (is_space(input[*i]) || is_operator(input[*i]))
-				break ;
-		}
-		else if (state == IN_SQUOTE)
-		{
-			if (input[*i] == '\'')
-				state = OUT_QUOTE;
-		}
-		else if (state == IN_DQUOTE)
-		{
-			if (input[*i] == '\"')
-				state = OUT_QUOTE;
-		}
-		(*i)++;
-	}
+	start = *i;
+	end = get_word_end(input, *i, &state);
 	if (state != OUT_QUOTE)
 	{
 		printf("Error: open quotes\n");
@@ -86,7 +93,9 @@ void	handle_word(char *input, t_token **head, int *i)
 		*head = NULL;
 		return ;
 	}
-	add_token(create_token(ft_substr(input, start, *i - start), WORD), head, NULL);
+	add_token(create_token(
+			ft_substr(input, start, end - start), WORD), head, NULL);
+	*i = end;
 }
 
 t_token	*lexer(char *input)

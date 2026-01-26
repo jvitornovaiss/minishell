@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:53:16 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/25 22:35:38 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/25 23:27:37 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
 	t_token	*tokens;
-	//t_enviroment env;
+	t_setup env;
 	t_token	*temp;
 
 	(void)argc;
 	(void)argv;
-	//env.env = envp;
+	env.envp = envp;
 	while (1)
 	{
 		input = readline("minishell > ");
@@ -45,7 +45,7 @@ int	main(int argc, char **argv, char **envp)
 			temp = temp->next;
 		}
 		temp = tokens;
-		expander(temp, envp);
+		expander(temp, env);
 		temp = tokens;
 		printf("\n---APÓS EXPANDIR---\n");
 		while (temp)
@@ -58,3 +58,15 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
+
+
+// TO DO
+// 1. Com a prepare_to_split pronta, fazer a rotina para retokenizar
+// 2. 
+// 3. 
+//
+//
+//
+//
+//
+//

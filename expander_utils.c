@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 15:25:19 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/25 22:00:22 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/25 23:29:05 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_getenv(char *name, char **env)
 	{
 		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
 		{
-			value = &env[i][len+1];
+			value = &env[i][len + 1];
 			return (ft_strdup(value));
 		}
 		i++;

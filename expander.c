@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 00:30:43 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/25 22:02:35 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/25 23:25:02 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ char	*append_char(char *str, char c)
 	return (new_str);
 }
 
-char	*expand_and_join(char *new_str, char *str, int *i, char **env, int state) //preciso criar uma strcut para cá
+char	*expand_and_join(char *new_str, char *str, int *i, t_setup env)
 {
 	char	*var_name;
 	char	*var_value;
 	char	*temp;
 
-	(void)env; //remover
 	(*i)++;
 	if (str[*i] == '?')
 	{
@@ -52,34 +51,34 @@ char	*expand_and_join(char *new_str, char *str, int *i, char **env, int state) /
 	else
 	{
 		var_name = extract_var_name(&str[*i]);
-		*i += ft_strlen(var_name); //para pular o nome da variável
-		if (ft_getenv(var_name, env)) //usar funcao get_env
-			var_value = ft_getenv(var_name, env);
-		else
+		*i += ft_strlen(var_name);
+		var_value = ft_getenv(var_name, env.envp);
+		if (!var_value)
 			var_value = ft_strdup("");
 		free(var_name);
 	}
-	prepare_to_split(var_value, state); //lOGICA PARA RETOKENIZAR
+	prepare_to_split(var_value, env.state); //lOGICA PARA RETOKENIZAR
 	temp = ft_strjoin(new_str, var_value);
 	free(new_str);
 	free(var_value);
 	return (temp);
 }
 
-char	*handler_expansion(char *str, char **env)
+char	*handler_expansion(char *str, t_setup env)
 {
 	int		i;
-	int		state;
 	char	*new_str;
 
 	i = 0;
-	state = OUT_QUOTE;
+	env.state = OUT_QUOTE;
 	new_str = ft_strdup("");
 	while (str[i])
 	{
-		state = update_state(str[i], state);
-		if (str[i] == '$' && state != IN_SQUOTE && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'))
-			new_str = expand_and_join(new_str, str, &i, env, state);
+		env.state = update_state(str[i], env.state);
+		if (str[i] == '$' && env.state != IN_SQUOTE
+			&& (ft_isalnum(str[i + 1])
+				|| str[i + 1] == '_' || str[i + 1] == '?'))
+			new_str = expand_and_join(new_str, str, &i, env);
 		else
 		{
 			new_str = append_char(new_str, str[i]);
@@ -90,7 +89,7 @@ char	*handler_expansion(char *str, char **env)
 	return (new_str);
 }
 
-void	expander(t_token *tokens, char **env)
+void	expander(t_token *tokens, t_setup env)
 {
 	while (tokens)
 	{
