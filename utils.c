@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 13:06:57 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/24 23:34:51 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/25 22:25:03 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ void	free_tokens(t_token *head)
 int	update_state(char c, int state)
 {
 	if (c == '\'' && state == OUT_QUOTE)
-			state = IN_SQUOTE;
+		state = IN_SQUOTE;
 	else if (c == '\"' && state == OUT_QUOTE)
-			state = IN_DQUOTE;
+		state = IN_DQUOTE;
 	else if ((c == '\'' && state == IN_SQUOTE)
 		|| (c == '\"' && state == IN_DQUOTE))
-			state = OUT_QUOTE;
+		state = OUT_QUOTE;
 	return (state);
 }

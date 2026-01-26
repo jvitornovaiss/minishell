@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 00:30:43 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/25 00:30:44 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/25 22:02:35 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ char	*expand_and_join(char *new_str, char *str, int *i, char **env, int state) /
 	{
 		var_name = extract_var_name(&str[*i]);
 		*i += ft_strlen(var_name); //para pular o nome da variável
-		if (getenv(var_name)) //usar funcao get_env
-			var_value = ft_strdup(getenv(var_name));
+		if (ft_getenv(var_name, env)) //usar funcao get_env
+			var_value = ft_getenv(var_name, env);
 		else
 			var_value = ft_strdup("");
 		free(var_name);

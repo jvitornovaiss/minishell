@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rida-cos <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 15:25:19 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/25 15:25:22 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/25 22:00:22 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,26 @@ void	prepare_to_split(char *var_value, int state)
 			i++;
 		}
 	}
+}
+
+char	*ft_getenv(char *name, char **env)
+{
+	int		i;
+	int		len;
+	char	*value;
+
+	i = 0;
+	if (!name || !env)
+		return (NULL);
+	len = ft_strlen(name);
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
+		{
+			value = &env[i][len+1];
+			return (ft_strdup(value));
+		}
+		i++;
+	}
+	return (NULL);
 }

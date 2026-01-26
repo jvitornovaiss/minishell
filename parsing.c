@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:53:16 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/25 00:39:53 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/25 22:35:38 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
 	t_token	*tokens;
+	//t_enviroment env;
 	t_token	*temp;
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
+	//env.env = envp;
 	while (1)
 	{
 		input = readline("minishell > ");

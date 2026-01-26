@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/24 22:28:54 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/25 22:31:21 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ typedef struct s_token {
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_enviroment
+{
+	char	**env;
+	t_state	state;
+}	t_enviroment;
+
+
 //libft/libft.c
 size_t	ft_strlen(const char *str);
 
@@ -67,5 +74,6 @@ void	expander(t_token *tokens, char **env);
 //expander_utils.c
 char	*extract_var_name(char *str);
 void	prepare_to_split(char *var_value, int state);
+char	*ft_getenv(char *name, char **env);
 
 #endif
