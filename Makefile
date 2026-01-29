@@ -3,7 +3,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -g -Wall -Wextra -Werror -Ilibft -Iincludes
 
-SRC = src/parsing.c \
+SRC = src/main.c \
 		src/lexer.c \
 		src/utils.c \
 		src/expander.c \

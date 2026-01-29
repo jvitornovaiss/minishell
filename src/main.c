@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:53:16 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/25 23:27:37 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/29 00:13:40 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	main(int argc, char **argv, char **envp)
 			printf("Value: %s\tType: %d\n", temp->value, temp->type);
 			temp = temp->next;
 		}
+		retokenizer(&tokens);
 		free_tokens(tokens);
 		free(input);
 	}
@@ -61,9 +62,9 @@ int	main(int argc, char **argv, char **envp)
 
 
 // TO DO
-// 1. Com a prepare_to_split pronta, fazer a rotina para retokenizar
-// 2. 
-// 3. 
+// 1. Inplementar o split_and_relink
+// 2. Criar teste para validar apos o split
+// 3. Estudar os diferentes comportamentos para diferentes tipos de declaracao da variavel
 //
 //
 //

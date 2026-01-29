@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/28 22:21:38 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/28 23:55:52 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,8 @@ void		expander(t_token *tokens, t_setup env);
 char		*extract_var_name(char *str);
 void		prepare_to_split(char *var_value, int state);
 char		*ft_getenv(char *name, char **env);
+
+// retokenizer
+void retokenizer(t_token **tokens);
 
 #endif
