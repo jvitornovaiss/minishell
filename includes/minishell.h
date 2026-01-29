@@ -6,14 +6,14 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/26 00:22:14 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/28 22:21:38 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft/libft.h"
+# include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <readline/readline.h>

@@ -3,11 +3,11 @@ NAME = minishell
 CC = cc
 CFLAGS = -g -Wall -Wextra -Werror -Ilibft -Iincludes
 
-SRC = parsing.c \
-		lexer.c \
-		utils.c \
-		expander.c \
-		expander_utils.c
+SRC = src/parsing.c \
+		src/lexer.c \
+		src/utils.c \
+		src/expander.c \
+		src/expander_utils.c
 
 OBJ = $(SRC:.c=.o)
 
