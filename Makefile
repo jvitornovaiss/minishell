@@ -7,7 +7,8 @@ SRC = src/main.c \
 		src/lexer.c \
 		src/utils.c \
 		src/expander.c \
-		src/expander_utils.c
+		src/expander_utils.c \
+		src/retokenizer.c
 
 OBJ = $(SRC:.c=.o)
 

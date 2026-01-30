@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:53:16 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/29 00:13:40 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/30 00:37:52 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			break ;
 		}
-		temp = tokens;
 		printf("\n---ANTES DE EXPANDIR---\n");
+		temp = tokens;
 		while (temp)
 		{
 			printf("Value: %s\tType: %d\n", temp->value, temp->type);
@@ -46,14 +46,22 @@ int	main(int argc, char **argv, char **envp)
 		}
 		temp = tokens;
 		expander(temp, env);
-		temp = tokens;
 		printf("\n---APÓS EXPANDIR---\n");
+		temp = tokens;
 		while (temp)
 		{
 			printf("Value: %s\tType: %d\n", temp->value, temp->type);
 			temp = temp->next;
 		}
 		retokenizer(&tokens);
+		printf("\n---APÓS RETOKENIZER---\n");
+		temp = tokens;
+		while (temp)
+		{
+			printf("Value: %s\tType: %d\n", temp->value, temp->type);
+			temp = temp->next;
+		}
+		
 		free_tokens(tokens);
 		free(input);
 	}
@@ -62,10 +70,10 @@ int	main(int argc, char **argv, char **envp)
 
 
 // TO DO
-// 1. Inplementar o split_and_relink
-// 2. Criar teste para validar apos o split
+// 1. implementar remove_quotes
+// 2. 
 // 3. Estudar os diferentes comportamentos para diferentes tipos de declaracao da variavel
-//
+// 4. 
 //
 //
 //

@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/28 23:55:52 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/29 23:18:30 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int			is_operator(char c);
 void		free_tokens(t_token *head);
 int			update_state(char c, int state);
 char		*clean_quotes(char *str);
+void		free_arr(char **array);
 
 //lexer.c
 void		add_token(t_token *new_token, t_token **head, int *i);
@@ -80,5 +81,6 @@ char		*ft_getenv(char *name, char **env);
 
 // retokenizer
 void retokenizer(t_token **tokens);
+void    split_and_relink(t_token *token);
 
 #endif

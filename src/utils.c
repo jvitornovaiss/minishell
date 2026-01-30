@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 13:06:57 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/25 22:25:03 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/01/29 23:12:10 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,19 @@ int	update_state(char c, int state)
 		|| (c == '\"' && state == IN_DQUOTE))
 		state = OUT_QUOTE;
 	return (state);
+}
+
+void	free_arr(char **array)
+{
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while(array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }
