@@ -91,6 +91,8 @@ typedef struct s_cmd
 	char	**argv;
 }	t_cmd;
 
+t_cmd		*tokens_to_cmd(t_token *tokens);
+void		free_cmd(t_cmd *cmd);
 int			execute_cmd(t_cmd *cmd, char **envp);
 char		*find_cmd_path(char *cmd, char **envp);
 

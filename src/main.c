@@ -12,12 +12,23 @@
 
 #include "minishell.h"
 
+static void	run_command(t_token *tokens, char **envp)
+{
+	t_cmd	*cmd;
+
+	cmd = tokens_to_cmd(tokens);
+	if (cmd)
+	{
+		execute_cmd(cmd, envp);
+		free_cmd(cmd);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
 	t_token	*tokens;
-	t_setup env;
-	t_token	*temp;
+	t_setup	env;
 
 	(void)argc;
 	(void)argv;
@@ -27,41 +38,18 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("minishell > ");
 		if (!input)
 		{
-			printf("exit\n");
+			ft_putendl_fd("exit", 1);
 			break ;
 		}
-		tokens = lexer(input);
-		if (strcmp(input, "exit") == 0)
+		if (ft_strncmp(input, "exit", 5) == 0)
 		{
-			free_tokens(tokens);
 			free(input);
 			break ;
 		}
-		printf("\n---ANTES DE EXPANDIR---\n");
-		temp = tokens;
-		while (temp)
-		{
-			printf("Value: %s\tType: %d\n", temp->value, temp->type);
-			temp = temp->next;
-		}
-		temp = tokens;
-		expander(temp, env);
-		printf("\n---APÓS EXPANDIR---\n");
-		temp = tokens;
-		while (temp)
-		{
-			printf("Value: %s\tType: %d\n", temp->value, temp->type);
-			temp = temp->next;
-		}
+		tokens = lexer(input);
+		expander(tokens, env);
 		retokenizer(&tokens);
-		printf("\n---APÓS RETOKENIZER---\n");
-		temp = tokens;
-		while (temp)
-		{
-			printf("Value: %s\tType: %d\n", temp->value, temp->type);
-			temp = temp->next;
-		}
-		
+		run_command(tokens, envp);
 		free_tokens(tokens);
 		free(input);
 	}

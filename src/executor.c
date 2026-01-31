@@ -12,6 +12,71 @@
 
 #include "minishell.h"
 
+static int	count_word_tokens(t_token *tokens)
+{
+	int	count;
+
+	count = 0;
+	while (tokens)
+	{
+		if (tokens->type == WORD)
+			count++;
+		tokens = tokens->next;
+	}
+	return (count);
+}
+
+t_cmd	*tokens_to_cmd(t_token *tokens)
+{
+	t_cmd	*cmd;
+	int		count;
+	int		i;
+
+	count = count_word_tokens(tokens);
+	if (count == 0)
+		return (NULL);
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->argv = malloc(sizeof(char *) * (count + 1));
+	if (!cmd->argv)
+	{
+		free(cmd);
+		return (NULL);
+	}
+	i = 0;
+	while (tokens)
+	{
+		if (tokens->type == WORD)
+		{
+			cmd->argv[i] = ft_strdup(tokens->value);
+			i++;
+		}
+		tokens = tokens->next;
+	}
+	cmd->argv[i] = NULL;
+	return (cmd);
+}
+
+void	free_cmd(t_cmd *cmd)
+{
+	int	i;
+
+	if (!cmd)
+		return ;
+	if (cmd->argv)
+	{
+		i = 0;
+		while (cmd->argv[i])
+		{
+			free(cmd->argv[i]);
+			i++;
+		}
+		free(cmd->argv);
+	}
+	free(cmd);
+}
+
 static void	print_error(char *prefix, char *msg)
 {
 	ft_putstr_fd("minishell: ", 2);
