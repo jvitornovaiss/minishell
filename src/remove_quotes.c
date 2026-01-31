@@ -14,8 +14,42 @@
 
 char *remove_quote(char *str)
 {
-	
+	char *new_str;
+	int i;
+	int j;
+	t_state state;
+	t_state next_state;
+
+	new_str = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	j = 0;
+	state = OUT_QUOTE;
+	printf("\n");
+	while (str[i])
+	{
+		next_state = update_state(str[i], state);
+		printf("state: %d\tnext_state: %d\n", state, next_state);
+		if (state != next_state)
+			state = next_state;
+		else
+		{
+			new_str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	new_str[j] = '\0';
+	return (new_str);
 }
+
+// Linha logo antes do primeiro if
+// i			0	1	2	3	4	5
+// 				"	'	R	i	'	"
+// state		O	D	D	D	D	D
+// next_state	D	D	D	D	D	O
+// new_str			'	R	i	'
 
 void	remove_quotes(t_token *tokens)
 {
@@ -25,7 +59,7 @@ void	remove_quotes(t_token *tokens)
 	curr = tokens;
 	while (curr)
 	{
-		if (curr->next == WORD)
+		if (curr->type == WORD)
 		{
 			new_value = remove_quote(curr->value);
 			free(curr->value);

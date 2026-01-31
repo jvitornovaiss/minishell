@@ -8,7 +8,8 @@ SRC = src/main.c \
 		src/utils.c \
 		src/expander.c \
 		src/expander_utils.c \
-		src/retokenizer.c
+		src/retokenizer.c \
+		src/remove_quotes.c
 
 OBJ = $(SRC:.c=.o)
 

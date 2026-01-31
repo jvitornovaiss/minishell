@@ -61,6 +61,14 @@ int	main(int argc, char **argv, char **envp)
 			printf("Value: %s\tType: %d\n", temp->value, temp->type);
 			temp = temp->next;
 		}
+		remove_quotes(tokens);
+		printf("\n---APÓS REMOVER QUOTES---\n");
+		temp = tokens;
+		while (temp)
+		{
+			printf("Value: %s\tType: %d\n", temp->value, temp->type);
+			temp = temp->next;
+		}
 		
 		free_tokens(tokens);
 		free(input);

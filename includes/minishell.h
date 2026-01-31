@@ -79,8 +79,12 @@ char		*extract_var_name(char *str);
 void		prepare_to_split(char *var_value, int state);
 char		*ft_getenv(char *name, char **env);
 
-// retokenizer
+// retokenizer.c
 void retokenizer(t_token **tokens);
 void    split_and_relink(t_token *token);
+
+//remove_quotes.c
+char *remove_quote(char *str);
+void	remove_quotes(t_token *tokens);
 
 #endif
