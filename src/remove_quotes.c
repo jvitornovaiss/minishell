@@ -26,11 +26,9 @@ char *remove_quote(char *str)
 	i = 0;
 	j = 0;
 	state = OUT_QUOTE;
-	printf("\n");
 	while (str[i])
 	{
 		next_state = update_state(str[i], state);
-		printf("state: %d\tnext_state: %d\n", state, next_state);
 		if (state != next_state)
 			state = next_state;
 		else

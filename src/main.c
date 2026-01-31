@@ -30,37 +30,14 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			break ;
 		}
-		tokens = lexer(input);
 		if (strcmp(input, "exit") == 0)
 		{
-			free_tokens(tokens);
 			free(input);
 			break ;
 		}
-		printf("\n---ANTES DE EXPANDIR---\n");
-		temp = tokens;
-		while (temp)
-		{
-			printf("Value: %s\tType: %d\n", temp->value, temp->type);
-			temp = temp->next;
-		}
-		temp = tokens;
-		expander(temp, env);
-		printf("\n---APÓS EXPANDIR---\n");
-		temp = tokens;
-		while (temp)
-		{
-			printf("Value: %s\tType: %d\n", temp->value, temp->type);
-			temp = temp->next;
-		}
+		tokens = lexer(input);
+		expander(tokens, env);
 		retokenizer(&tokens);
-		printf("\n---APÓS RETOKENIZER---\n");
-		temp = tokens;
-		while (temp)
-		{
-			printf("Value: %s\tType: %d\n", temp->value, temp->type);
-			temp = temp->next;
-		}
 		remove_quotes(tokens);
 		printf("\n---APÓS REMOVER QUOTES---\n");
 		temp = tokens;
@@ -69,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 			printf("Value: %s\tType: %d\n", temp->value, temp->type);
 			temp = temp->next;
 		}
-		
+		build_commands();
 		free_tokens(tokens);
 		free(input);
 	}
