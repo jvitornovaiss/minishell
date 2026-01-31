@@ -10,66 +10,74 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include "executor.h"
+#include "minishell.h"
 
-char	*get_dir(char *path, char *cmd)
+static char	*build_full_path(char *dir, char *cmd)
 {
-    char	*dir;
+	char	*tmp;
 	char	*full_path;
 
-    dir = strtok(path, ":");
-    while (dir)
+	tmp = ft_strjoin(dir, "/");
+	if (!tmp)
+		return (NULL);
+	full_path = ft_strjoin(tmp, cmd);
+	free(tmp);
+	return (full_path);
+}
+
+static char	*search_in_paths(char **paths, char *cmd)
+{
+	char	*full_path;
+	int		i;
+
+	i = 0;
+	while (paths[i])
 	{
-        full_path = malloc(strlen(dir) + strlen(cmd) + 2);
-        if (!full_path)
-            return NULL;
-
-        strcpy(full_path, dir);
-        strcat(full_path, "/");
-        strcat(full_path, cmd);
-
-        if (access(full_path, X_OK) == 0)
-            return full_path;
-
-        free(full_path);
-        dir = strtok(NULL, ":");
+		full_path = build_full_path(paths[i], cmd);
+		if (!full_path)
+			return (NULL);
+		if (access(full_path, X_OK) == 0)
+			return (full_path);
+		free(full_path);
+		i++;
 	}
-    return NULL;
+	return (NULL);
+}
+
+static char	*get_path_env(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (envp[i] + 5);
+		i++;
+	}
+	return (NULL);
 }
 
 char	*find_cmd_path(char *cmd, char **envp)
 {
-    char	*path;
-	char    *path_copy;
-    char    *result;
-    int     i;
+	char	*path;
+	char	**paths;
+	char	*result;
+	int		i;
 
-    i = 0;
-	path = NULL;
-    while (envp[i])
-    {
-        if (strncmp(envp[i], "PATH=", 5) == 0)
-		{
-            path = envp[i] + 5;
-			break;
-		}
-        i++;
-    }
-    if (!path)
+	path = get_path_env(envp);
+	if (!path)
+		return (NULL);
+	paths = ft_split(path, ':');
+	if (!paths)
+		return (NULL);
+	result = search_in_paths(paths, cmd);
+	i = 0;
+	while (paths[i])
 	{
-        return NULL;
+		free(paths[i]);
+		i++;
 	}
-
-	path_copy = strdup(path);
-    if (!path_copy)
-	{
-        return NULL;
-	}
-
-    result = get_dir(path_copy, cmd);
-    free(path_copy);
-	return result;
+	free(paths);
+	return (result);
 }

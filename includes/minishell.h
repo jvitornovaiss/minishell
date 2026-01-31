@@ -16,6 +16,8 @@
 # include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -80,7 +82,16 @@ void		prepare_to_split(char *var_value, int state);
 char		*ft_getenv(char *name, char **env);
 
 // retokenizer
-void retokenizer(t_token **tokens);
-void    split_and_relink(t_token *token);
+void		retokenizer(t_token **tokens);
+void		split_and_relink(t_token *token);
+
+//executor
+typedef struct s_cmd
+{
+	char	**argv;
+}	t_cmd;
+
+int			execute_cmd(t_cmd *cmd, char **envp);
+char		*find_cmd_path(char *cmd, char **envp);
 
 #endif
