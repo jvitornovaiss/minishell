@@ -16,8 +16,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
 	t_token	*tokens;
-	t_setup env;
+	t_setup	env;
 	t_token	*temp;
+	//t_cmd	*cmd;
 
 	(void)argc;
 	(void)argv;
@@ -46,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 			printf("Value: %s\tType: %d\n", temp->value, temp->type);
 			temp = temp->next;
 		}
-		build_commands();
+		//cmd = build_commands(tokens);
 		free_tokens(tokens);
 		free(input);
 	}

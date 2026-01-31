@@ -50,6 +50,15 @@ typedef struct s_setup
 	t_state	state;
 }	t_setup;
 
+typedef struct s_cmd
+{
+	char			**args;
+	int				fd_in;
+	int				fd_out;
+	struct s_cmd	*next;
+	
+}	t_cmd;
+
 //libft/libft.c
 size_t		ft_strlen(const char *str);
 
