@@ -6,11 +6,31 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:53:16 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/30 00:37:52 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/01 23:09:09 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void print_commands(t_cmd *head)
+{
+    int i;
+    int cmd_count = 0;
+
+    while (head)
+    {
+        printf("\n--- COMANDO %d ---\n", ++cmd_count);
+        printf("FD IN: %d\n", head->fd_in);
+        printf("FD OUT: %d\n", head->fd_out);
+        i = 0;
+        while (head->args && head->args[i])
+        {
+            printf("Arg[%d]: %s\n", i, head->args[i]);
+            i++;
+        }
+        head = head->next;
+    }
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -18,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*tokens;
 	t_setup	env;
 	t_token	*temp;
-	//t_cmd	*cmd;
+	t_cmd	*cmds;
 
 	(void)argc;
 	(void)argv;
@@ -47,7 +67,9 @@ int	main(int argc, char **argv, char **envp)
 			printf("Value: %s\tType: %d\n", temp->value, temp->type);
 			temp = temp->next;
 		}
-		//cmd = build_commands(tokens);
+		cmds = build_commands(tokens);
+		print_commands(cmds);
+		//free_commands(cmds);
 		free_tokens(tokens);
 		free(input);
 	}
@@ -56,9 +78,9 @@ int	main(int argc, char **argv, char **envp)
 
 
 // TO DO
-// 1. implementar remove_quotes
+// 1. implementar handle redirections
 // 2. 
-// 3. Estudar os diferentes comportamentos para diferentes tipos de declaracao da variavel
+// 3. 
 // 4. 
 //
 //

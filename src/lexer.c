@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:45:52 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/26 00:25:46 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/01 20:38:39 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	add_token(t_token *new_token, t_token **head, int *i)
 {
 	t_token	*temp;
 
-	if (!new_token)
+	if (!new_token || !head)
 		return ;
 	if (*head == NULL)
 		*head = new_token;

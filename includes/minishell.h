@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/01/29 23:18:30 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/01 22:21:32 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
+ #include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -95,5 +96,12 @@ void    split_and_relink(t_token *token);
 //remove_quotes.c
 char *remove_quote(char *str);
 void	remove_quotes(t_token *tokens);
+
+//build_commands
+t_cmd	*create_cmd_node();
+int		count_args(t_token *tokens);
+char **fill_args(t_token **tokens, t_cmd *new_node);
+void	add_cmd(t_cmd *new_node, t_cmd **head);
+t_cmd	*build_commands(t_token *tokens);
 
 #endif
