@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:53:16 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/01 23:09:09 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/01 23:12:20 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int argc, char **argv, char **envp)
 
 // TO DO
 // 1. implementar handle redirections
-// 2. 
+// 2. incluir free do cmds
 // 3. 
 // 4. 
 //

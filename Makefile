@@ -10,7 +10,9 @@ SRC = src/main.c \
 		src/expander_utils.c \
 		src/retokenizer.c \
 		src/remove_quotes.c \
-		src/build_commands.c
+		src/build_commands.c \
+		src/build_commands_utils.c \
+		src/handle_redirections.c
 
 OBJ = $(SRC:.c=.o)
 

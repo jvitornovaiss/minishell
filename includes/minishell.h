@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/01 22:21:32 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/03 20:43:58 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,11 @@ int		count_args(t_token *tokens);
 char **fill_args(t_token **tokens, t_cmd *new_node);
 void	add_cmd(t_cmd *new_node, t_cmd **head);
 t_cmd	*build_commands(t_token *tokens);
+
+//build_commands_utils.c
+int is_redirect(t_token_type type);
+
+// handle_redirections
+void handle_redirections(t_cmd *node, t_token **tokens);
 
 #endif
