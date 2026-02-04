@@ -12,7 +12,8 @@ SRC = src/main.c \
 		src/remove_quotes.c \
 		src/build_commands.c \
 		src/build_commands_utils.c \
-		src/handle_redirections.c
+		src/handle_redirections.c \
+		src/handle_errors.c
 
 OBJ = $(SRC:.c=.o)
 

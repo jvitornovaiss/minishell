@@ -6,11 +6,13 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:53:16 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/01 23:12:20 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/04 00:18:39 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exit_status = 0;
 
 static void print_commands(t_cmd *head)
 {
@@ -37,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*input;
 	t_token	*tokens;
 	t_setup	env;
-	t_token	*temp;
+	//t_token	*temp;
 	t_cmd	*cmds;
 
 	(void)argc;
@@ -60,17 +62,10 @@ int	main(int argc, char **argv, char **envp)
 		expander(tokens, env);
 		retokenizer(&tokens);
 		remove_quotes(tokens);
-		printf("\n---APÓS REMOVER QUOTES---\n");
-		temp = tokens;
-		while (temp)
-		{
-			printf("Value: %s\tType: %d\n", temp->value, temp->type);
-			temp = temp->next;
-		}
 		cmds = build_commands(tokens);
 		print_commands(cmds);
-		//free_commands(cmds);
 		free_tokens(tokens);
+		free_commands(cmds);
 		free(input);
 	}
 	return (0);
@@ -79,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 
 // TO DO
 // 1. implementar handle redirections
-// 2. incluir free do cmds
+// 2. HERE_DOC
 // 3. 
 // 4. 
 //
