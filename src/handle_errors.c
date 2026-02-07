@@ -21,3 +21,12 @@ void syntax_error_message(char *token_value)
         ft_putstr_fd("newline", 2);
     ft_putstr_fd("'\n", 2);
 }
+
+void set_error(const char *s, t_cmd *node, int status_error)
+{
+    if (s)
+        perror(s);
+    if (node)
+	    node->invalid = 1;
+    g_exit_status = status_error;
+}

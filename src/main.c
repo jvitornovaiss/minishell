@@ -74,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 
 // TO DO
 // 1. implementar handle redirections
-// 2. HERE_DOC
+// 2. HERE_DOC ajustar build_commands para conectar os pipes dos comandos.
 // 3. 
 // 4. 
 //

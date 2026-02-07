@@ -16,7 +16,8 @@
 # include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
- #include <fcntl.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -64,6 +65,7 @@ typedef struct s_cmd
 
 //libft/libft.c
 size_t		ft_strlen(const char *str);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 //utils.c
 t_token		*create_token(char *value, t_token_type type);
@@ -96,7 +98,7 @@ void	retokenizer(t_token **tokens);
 void	split_and_relink(t_token *token);
 
 //remove_quotes.c
-char *remove_quote(char *str);
+char	*remove_quote(char *str);
 void	remove_quotes(t_token *tokens);
 
 //build_commands
@@ -111,9 +113,13 @@ int		is_redirect(t_token_type type);
 void	free_commands(t_cmd *cmds);
 
 // handle_redirections
+void	open_output_file(t_token_type type, t_cmd *node, t_token **tokens);
+void	open_input_file(t_cmd *node, t_token **tokens);
 void	handle_redirections(t_cmd *node, t_token **tokens);
+
 
 //handle_errors.c
 void	syntax_error_message(char *token_value);
+void	set_error(const char *s, t_cmd *node, int status_error);
 
 #endif
