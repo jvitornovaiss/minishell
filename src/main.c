@@ -42,18 +42,18 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	env.envp = envp;
+	env.envp = env_dup(envp);
+	if (!env.envp && envp)
+	{
+		ft_putendl_fd("minishell: failed to init env", 2);
+		return (1);
+	}
 	while (1)
 	{
 		input = readline("minishell > ");
 		if (!input)
 		{
 			printf("exit\n");
-			break ;
-		}
-		if (strcmp(input, "exit") == 0)
-		{
-			free(input);
 			break ;
 		}
 		tokens = lexer(input);
@@ -69,6 +69,15 @@ int	main(int argc, char **argv, char **envp)
 		}
 		cmds = build_commands(tokens);
 		print_commands(cmds);
+
+		//talvez aqui valha a pena ficar em um arquivo separado a execução dos comandos
+		if (cmds && cmds->args && cmds->args[0])
+		{
+			if (is_builtin(cmds->args[0]))
+				execute_builtin(cmds, &env.envp);
+			else
+				execute_cmd(cmds, env.envp);
+		}
 		//free_commands(cmds);
 		free_tokens(tokens);
 		free(input);

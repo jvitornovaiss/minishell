@@ -110,4 +110,28 @@ int is_redirect(t_token_type type);
 // handle_redirections
 void handle_redirections(t_cmd *node, t_token **tokens);
 
+//executor.c
+int		execute_cmd(t_cmd *cmd, char **envp);
+
+//builtins
+int		is_builtin(const char *cmd);
+int		execute_builtin(t_cmd *cmd, char ***envp);
+int		fd_echo(char **args, int fd_out);
+int		fd_env(char **envp, int fd_out);
+int		fd_pwd(int fd_out);
+int		fd_cd(char **args, char ***envp, int fd_out);
+int		fd_export(char **args, char ***envp, int fd_out);
+int		fd_unset(char **args, char ***envp);
+int		fd_exit(char **args);
+
+//env utils
+char	**env_dup(char **envp);
+int		env_set(char ***envp, const char *key, const char *value);
+int		env_unset(char **envp, const char *key);
+int		env_is_valid_name(const char *name);
+
+//path.c
+char	*get_dir(char *path, char *cmd);
+char	*find_cmd_path(char *cmd, char **envp);
+
 #endif
