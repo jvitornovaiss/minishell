@@ -71,7 +71,6 @@ void		handle_word(char *input, t_token **head, int *i);
 t_token		*lexer(char *input);
 
 //expander.c
-char		*append_char(char *str, char c);
 char		*expand_and_join(char *new_str, char *str, int *i, t_setup env);
 char		*handler_expansion(char *str, t_setup env);
 void		expander(t_token *tokens, t_setup env);

@@ -12,28 +12,18 @@
 
 #include "minishell.h"
 
-char	*append_char(char *str, char c)
+static char	*join_segment(char *new_str, char *str, int start, int end)
 {
-	char	*new_str;
-	int		len;
-	int		i;
+	char	*seg;
+	char	*temp;
 
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	new_str = malloc(sizeof(char) * (len + 2));
-	if (!new_str)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		new_str[i] = str[i];
-		i++;
-	}
-	new_str[i] = c;
-	new_str[i + 1] = '\0';
-	free(str);
-	return (new_str);
+	if (end <= start)
+		return (new_str);
+	seg = ft_substr(str, start, end - start);
+	temp = ft_strjoin(new_str, seg);
+	free(new_str);
+	free(seg);
+	return (temp);
 }
 
 char	*expand_and_join(char *new_str, char *str, int *i, t_setup env)
@@ -67,24 +57,28 @@ char	*expand_and_join(char *new_str, char *str, int *i, t_setup env)
 char	*handler_expansion(char *str, t_setup env)
 {
 	int		i;
+	int		seg_start;
 	char	*new_str;
 
 	i = 0;
 	env.state = OUT_QUOTE;
 	new_str = ft_strdup("");
+	seg_start = 0;
 	while (str[i])
 	{
 		env.state = update_state(str[i], env.state);
 		if (str[i] == '$' && env.state != IN_SQUOTE
 			&& (ft_isalnum(str[i + 1])
 				|| str[i + 1] == '_' || str[i + 1] == '?'))
-			new_str = expand_and_join(new_str, str, &i, env);
-		else
 		{
-			new_str = append_char(new_str, str[i]);
-			i++;
+			new_str = join_segment(new_str, str, seg_start, i);
+			new_str = expand_and_join(new_str, str, &i, env);
+			seg_start = i;
 		}
+		else
+			i++;
 	}
+	new_str = join_segment(new_str, str, seg_start, i);
 	free(str);
 	return (new_str);
 }
