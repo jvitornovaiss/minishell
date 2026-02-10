@@ -43,8 +43,9 @@ typedef enum e_state
 
 typedef struct s_token
 {
-	char			*value;
 	t_token_type	type;
+	char			*value;
+	char			*hdoc_file;
 	struct s_token	*next;
 }	t_token;
 

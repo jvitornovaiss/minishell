@@ -43,7 +43,8 @@ t_cmd *build_commands(t_token *tokens)
 	t_cmd *head;
 	t_cmd *new_node;
 	t_token *curr;
-
+	
+	process_all_heredocs(tokens);
 	head = NULL;
 	curr = tokens;
 	while (curr)
