@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define MINISHELL_VERSION "0.1.0"
 
 # include "libft.h"
 # include <stdio.h>
