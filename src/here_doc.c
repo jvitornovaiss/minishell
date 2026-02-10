@@ -27,8 +27,10 @@ void handle_heredoc_creation(t_token *delimiter_token, int index)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || ft_strcmp(line, delimiter) == 0)
+		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 		{
+			if (!line)
+				ft_putstr_fd("minishell: warning: here-document delimited by end-of-file\n", 2);
 			free(line);
 			break ;
 		}

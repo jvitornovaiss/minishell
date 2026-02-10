@@ -13,7 +13,8 @@ SRC = src/main.c \
 		src/build_commands.c \
 		src/build_commands_utils.c \
 		src/handle_redirections.c \
-		src/handle_errors.c
+		src/handle_errors.c \
+		src/here_doc.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:53:16 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/04 00:18:39 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/10 01:30:58 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void print_commands(t_cmd *head)
         printf("\n--- COMANDO %d ---\n", ++cmd_count);
         printf("FD IN: %d\n", head->fd_in);
         printf("FD OUT: %d\n", head->fd_out);
+		printf("INVALID: %d\n", head->invalid);
         i = 0;
         while (head->args && head->args[i])
         {
@@ -73,9 +74,9 @@ int	main(int argc, char **argv, char **envp)
 
 
 // TO DO
-// 1. implementar handle redirections
-// 2. HERE_DOC ajustar build_commands para conectar os pipes dos comandos.
-// 3. 
+// 1. Checar leak de FD abertos
+// 2. Estudar mais sobre redirections.
+// 3. Realizar mais testes individuais sobre redirections
 // 4. 
 //
 //

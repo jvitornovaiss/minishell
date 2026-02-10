@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/03 23:24:34 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/09 21:39:25 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,18 @@ int		is_redirect(t_token_type type);
 void	free_commands(t_cmd *cmds);
 
 // handle_redirections
-void	open_output_file(t_token_type type, t_cmd *node, t_token **tokens);
-void	open_input_file(t_cmd *node, t_token **tokens);
+void	open_output_file(t_cmd *node, char *filename, t_token_type type);
+void	open_input_file(t_cmd *node, char *path, t_token_type type);
 void	handle_redirections(t_cmd *node, t_token **tokens);
 
 
 //handle_errors.c
 void	syntax_error_message(char *token_value);
 void	set_error(const char *s, t_cmd *node, int status_error);
+
+//here_doc.c
+char *generate_tmp_filename(int index);
+void handle_heredoc_creation(t_token *delimiter_token, int index);
+void process_all_heredocs(t_token *tokens);
 
 #endif

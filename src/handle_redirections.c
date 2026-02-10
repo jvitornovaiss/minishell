@@ -6,13 +6,13 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 22:39:58 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/03 23:24:22 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/09 22:30:51 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void open_output_file(t_token_type type, t_cmd *node, char *filename)
+void open_output_file(t_cmd *node, char *filename, t_token_type type)
 {
     int     fd;
 	
@@ -51,21 +51,13 @@ void open_input_file(t_cmd *node, char *path, t_token_type type)
     {
         // Se falhar, exibe o erro (perror/set_error)
         set_error(path, node, 1);
-        node->invalid = 1; // Marca que o comando não deve rodar, mas o loop continua
     }
     else
     {
-        // Se abrir com sucesso:
-        // Se já houve um erro antes neste comando, fechamos este fd e não guardamos.
-        if (node->invalid)
-            close(fd);
-        else
-        {
-            // Se o comando ainda é válido, atualizamos o fd_in final.
-            if (node->fd_in > 0)
-                close(node->fd_in);
-            node->fd_in = fd;
-        }
+		// Se o comando ainda é válido, atualizamos o fd_in final.
+		if (node->fd_in > 0)
+			close(node->fd_in);
+		node->fd_in = fd;
     }
     // O unlink do heredoc deve acontecer independente de erro ou validade
     if (type == HERE_DOC && path)
@@ -136,10 +128,8 @@ void handle_redirections(t_cmd *node, t_token **tokens)
 		g_exit_status = 2;
 		return ;
 	}
-	if (node->invalid)
-        return ;
 	if (type == RED_OUT || type == APPEND)
-		open_output_file(type, node, (*tokens)->value);
+		open_output_file(node, (*tokens)->value, type);
 	else if (type == RED_IN)
 		open_input_file(node, (*tokens)->value, RED_IN);
 	else if (type == HERE_DOC)
