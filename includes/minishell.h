@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/01 22:21:32 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/11 00:55:02 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@
 # include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
- #include <fcntl.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+extern int g_exit_status;
 
 typedef enum e_token_type
 {
@@ -40,8 +43,9 @@ typedef enum e_state
 
 typedef struct s_token
 {
-	char			*value;
 	t_token_type	type;
+	char			*value;
+	char			*hdoc_file;
 	struct s_token	*next;
 }	t_token;
 
@@ -56,12 +60,13 @@ typedef struct s_cmd
 	char			**args;
 	int				fd_in;
 	int				fd_out;
+	int				invalid;
 	struct s_cmd	*next;
-	
 }	t_cmd;
 
 //libft/libft.c
 size_t		ft_strlen(const char *str);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 //utils.c
 t_token		*create_token(char *value, t_token_type type);
@@ -90,18 +95,40 @@ void		prepare_to_split(char *var_value, int state);
 char		*ft_getenv(char *name, char **env);
 
 // retokenizer.c
-void retokenizer(t_token **tokens);
-void    split_and_relink(t_token *token);
+void	retokenizer(t_token **tokens);
+void	split_and_relink(t_token *token);
 
 //remove_quotes.c
-char *remove_quote(char *str);
+char	*remove_quote(char *str);
 void	remove_quotes(t_token *tokens);
 
 //build_commands
-t_cmd	*create_cmd_node();
-int		count_args(t_token *tokens);
-char **fill_args(t_token **tokens, t_cmd *new_node);
-void	add_cmd(t_cmd *new_node, t_cmd **head);
+char	**fill_args(t_token **tokens, t_cmd *new_node);
 t_cmd	*build_commands(t_token *tokens);
 
+//build_commands_utils.c
+t_cmd	*create_cmd_node();
+void	add_cmd(t_cmd *new_node, t_cmd **head);
+int		count_args(t_token *tokens);
+int		is_redirect(t_token_type type);
+void	free_commands(t_cmd *cmds);
+
+// handle_redirections
+void	open_output_file(t_cmd *node, char *filename, t_token_type type);
+void	open_input_file(t_cmd *node, char *path, t_token_type type);
+void	handle_redirections(t_cmd *node, t_token **tokens);
+
+
+//handle_errors.c
+void	syntax_error_message(char *token_value);
+void	set_error(const char *s, t_cmd *node, int status_error);
+
+//here_doc.c
+char	*generate_tmp_filename(int index);
+void	handle_heredoc_creation(t_token *delimiter_token, int index);
+void	process_all_heredocs(t_token *tokens);
+
+//copy_environment.c
+int		env_size(char **envp);
+char	**copy_environment(char **envp);
 #endif

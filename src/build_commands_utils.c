@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 21:26:29 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/01 21:46:16 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/03 23:24:44 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_cmd *create_cmd_node()
 	node->fd_in = 0;
 	node->fd_out = 1;
 	node->next = NULL;
+	node->invalid = 0;
 	return (node);
 }
 
@@ -73,4 +74,31 @@ int is_redirect(t_token_type type)
 		return (1);
 	}
 	return (0);
+}
+
+void free_commands(t_cmd *cmds)
+{
+	t_cmd *tmp;
+	int   i;
+
+	while (cmds)
+	{
+		tmp = cmds->next;
+		// 1. Limpa a matriz de argumentos
+		if (cmds->args)
+		{
+			i = 0;
+			while (cmds->args[i])
+				free(cmds->args[i++]);
+			free(cmds->args);
+		}
+		// 2. Fecha FDs se foram abertos (diferente do padrão 0 e 1)
+		if (cmds->fd_in != 0)
+			close(cmds->fd_in);
+		if (cmds->fd_out != 1)
+			close(cmds->fd_out);
+		// 3. Limpa o nó
+		free(cmds);
+		cmds = tmp;
+	}
 }
