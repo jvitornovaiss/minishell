@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror -Ilibft -Iincludes
+CFLAGS = -g -Wall -Wextra -Ilibft -Iincludes
 
 SRC = src/main.c \
 		src/lexer.c \
@@ -14,7 +14,8 @@ SRC = src/main.c \
 		src/build_commands_utils.c \
 		src/handle_redirections.c \
 		src/handle_errors.c \
-		src/here_doc.c
+		src/here_doc.c \
+		src/copy_environment.c
 
 OBJ = $(SRC:.c=.o)
 

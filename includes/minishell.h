@@ -6,7 +6,7 @@
 /*   By: rida-cos <ric.costamoraes@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:37:09 by rida-cos          #+#    #+#             */
-/*   Updated: 2026/02/09 21:39:25 by rida-cos         ###   ########.fr       */
+/*   Updated: 2026/02/11 00:55:02 by rida-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,11 @@ void	syntax_error_message(char *token_value);
 void	set_error(const char *s, t_cmd *node, int status_error);
 
 //here_doc.c
-char *generate_tmp_filename(int index);
-void handle_heredoc_creation(t_token *delimiter_token, int index);
-void process_all_heredocs(t_token *tokens);
+char	*generate_tmp_filename(int index);
+void	handle_heredoc_creation(t_token *delimiter_token, int index);
+void	process_all_heredocs(t_token *tokens);
 
+//copy_environment.c
+int		env_size(char **envp);
+char	**copy_environment(char **envp);
 #endif
