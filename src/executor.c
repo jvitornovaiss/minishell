@@ -10,9 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <sys/wait.h>
-#include <stdio.h>
 #include "minishell.h"
 
 int execute_cmd(t_cmd *cmd, char **envp)
@@ -41,7 +38,7 @@ int execute_cmd(t_cmd *cmd, char **envp)
 		execve(path, cmd->args, envp);
 		perror("execve");
 		free(path);
-		_exit(127);
+		exit(127);
 	}
 
 	free(path);

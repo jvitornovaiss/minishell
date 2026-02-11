@@ -6,17 +6,27 @@
 /*   By: jnovais <jnovais@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 20:50:00 by jnovais           #+#    #+#             */
-/*   Updated: 2026/02/04 20:50:00 by jnovais          ###   ########.fr       */
+/*   Updated: 2026/02/10 11:44:38 by jnovais          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
 
 static void	print_cd_error(char *msg)
 {
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putendl_fd(msg, 2);
+}
+
+static void	print_cd_errno(char *arg)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	if (arg)
+	{
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putendl_fd(strerror(errno), 2);
 }
 
 static char	*get_target_path(char **args, char **envp, int *print_path)
@@ -70,7 +80,7 @@ int	fd_cd(char **args, char ***envp, int fd_out)
 		oldpwd = ft_getenv("PWD", *envp);
 	if (chdir(path) != 0)
 	{
-		perror("cd");
+		print_cd_errno(args[1]);
 		free(path);
 		free(oldpwd);
 		return (1);

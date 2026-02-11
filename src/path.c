@@ -6,70 +6,89 @@
 /*   By: jnovais <jnovais@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 20:57:22 by jnovais           #+#    #+#             */
-/*   Updated: 2026/01/26 20:57:22 by jnovais          ###   ########.fr       */
+/*   Updated: 2026/02/11 09:42:49 by jnovais          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
 #include "minishell.h"
+
+static void	free_split(char **parts)
+{
+	size_t	i;
+
+	if (!parts)
+		return ;
+	i = 0;
+	while (parts[i])
+		free(parts[i++]);
+	free(parts);
+}
+
+static char	*build_cmd_path(const char *dir, const char *cmd)
+{
+	char	*full_path;
+	size_t	len;
+
+	len = ft_strlen(dir) + ft_strlen(cmd) + 2;
+	full_path = malloc(len);
+	if (!full_path)
+		return (NULL);
+	ft_strlcpy(full_path, dir, len);
+	ft_strlcat(full_path, "/", len);
+	ft_strlcat(full_path, cmd, len);
+	return (full_path);
+}
+
+static char	*return_with_free(char **dirs, char *path)
+{
+	free_split(dirs);
+	return (path);
+}
 
 char	*get_dir(char *path, char *cmd)
 {
-    char	*dir;
+	char	**dirs;
 	char	*full_path;
+	size_t	i;
 
-    dir = strtok(path, ":");
-    while (dir)
+	dirs = ft_split(path, ':');
+	if (!dirs)
+		return (NULL);
+	i = 0;
+	while (dirs[i])
 	{
-        full_path = malloc(strlen(dir) + strlen(cmd) + 2);
-        if (!full_path)
-            return NULL;
-
-        strcpy(full_path, dir);
-        strcat(full_path, "/");
-        strcat(full_path, cmd);
-
-        if (access(full_path, X_OK) == 0)
-            return full_path;
-
-        free(full_path);
-        dir = strtok(NULL, ":");
+		full_path = build_cmd_path(dirs[i], cmd);
+		if (!full_path)
+			return (return_with_free(dirs, NULL));
+		if (access(full_path, X_OK) == 0)
+			return (return_with_free(dirs, full_path));
+		free(full_path);
+		i++;
 	}
-    return NULL;
+	return (return_with_free(dirs, NULL));
 }
 
 char	*find_cmd_path(char *cmd, char **envp)
 {
-    char	*path;
-	char    *path_copy;
-    char    *result;
-    int     i;
+	char	*path;
+	char	*result;
+	int		i;
 
-    i = 0;
+	i = 0;
 	path = NULL;
-    while (envp[i])
-    {
-        if (strncmp(envp[i], "PATH=", 5) == 0)
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
-            path = envp[i] + 5;
+			path = envp[i] + 5;
 			break;
 		}
-        i++;
-    }
-    if (!path)
-	{
-        return NULL;
+		i++;
 	}
-
-	path_copy = strdup(path);
-    if (!path_copy)
+	if (!path)
 	{
-        return NULL;
+		return (NULL);
 	}
-
-    result = get_dir(path_copy, cmd);
-    free(path_copy);
-	return result;
+	result = get_dir(path, cmd);
+	return (result);
 }
