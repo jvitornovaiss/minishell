@@ -111,12 +111,14 @@ t_cmd	*build_commands(t_token *tokens);
 
 //build_commands_utils.c
 int is_redirect(t_token_type type);
+void		free_commands(t_cmd *head);
 
 // handle_redirections
 void handle_redirections(t_cmd *node, t_token **tokens);
 
 //executor.c
 int		execute_cmd(t_cmd *cmd, char **envp);
+void	close_cmd_fds(t_cmd *cmd);
 
 //builtins
 int		is_builtin(const char *cmd);

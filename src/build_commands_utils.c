@@ -74,3 +74,27 @@ int is_redirect(t_token_type type)
 	}
 	return (0);
 }
+
+void	free_commands(t_cmd *head)
+{
+	t_cmd	*temp;
+	int		i;
+
+	while (head)
+	{
+		temp = head->next;
+		if (head->fd_in > STDERR_FILENO)
+			close(head->fd_in);
+		if (head->fd_out > STDERR_FILENO)
+			close(head->fd_out);
+		if (head->args)
+		{
+			i = 0;
+			while (head->args[i])
+				free(head->args[i++]);
+			free(head->args);
+		}
+		free(head);
+		head = temp;
+	}
+}

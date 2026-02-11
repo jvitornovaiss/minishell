@@ -74,11 +74,14 @@ int	main(int argc, char **argv, char **envp)
 		if (cmds && cmds->args && cmds->args[0])
 		{
 			if (is_builtin(cmds->args[0]))
+			{
 				execute_builtin(cmds, &env.envp);
+				close_cmd_fds(cmds);
+			}
 			else
 				execute_cmd(cmds, env.envp);
 		}
-		//free_commands(cmds);
+		free_commands(cmds);
 		free_tokens(tokens);
 		free(input);
 	}
@@ -87,12 +90,6 @@ int	main(int argc, char **argv, char **envp)
 
 
 // TO DO
-// 1. implementar handle redirections
-// 2. incluir free do cmds
-// 3. 
-// 4. 
-//
-//
 //
 //
 //
