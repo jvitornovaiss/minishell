@@ -54,17 +54,22 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			break ;
 		}
-		if (strcmp(input, "exit") == 0)
-		{
-			free(input);
-			break ;
-		}
 		tokens = lexer(input);
 		expander(tokens, env);
 		retokenizer(&tokens);
 		remove_quotes(tokens);
 		cmds = build_commands(tokens);
 		print_commands(cmds);
+
+		//talvez aqui valha a pena ficar em um arquivo separado a execução dos comandos
+		if (cmds && cmds->args && cmds->args[0])
+		{
+			if (is_builtin(cmds->args[0]))
+				execute_builtin(cmds, &env.envp);
+			else
+				execute_cmd(cmds, env.envp);
+		}
+		//free_commands(cmds);
 		free_tokens(tokens);
 		free_commands(cmds);
 		free(input);
