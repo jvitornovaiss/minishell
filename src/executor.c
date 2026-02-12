@@ -6,46 +6,161 @@
 /*   By: jnovais <jnovais@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:38:02 by jnovais           #+#    #+#             */
-/*   Updated: 2026/01/23 23:38:02 by jnovais          ###   ########.fr       */
+/*   Updated: 2026/02/12 01:14:00 by jnovais          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int execute_cmd(t_cmd *cmd, char **envp)
+static void	apply_redirections(t_cmd *cmd)
 {
-    pid_t	pid;
-    int		status;
-    char	*path;
+	if (cmd->fd_in != STDIN_FILENO)
+	{
+		dup2(cmd->fd_in, STDIN_FILENO);
+		close(cmd->fd_in);
+	}
+	if (cmd->fd_out != STDOUT_FILENO)
+	{
+		dup2(cmd->fd_out, STDOUT_FILENO);
+		close(cmd->fd_out);
+	}
+}
 
-    path = find_cmd_path(cmd->args[0], envp);
-    if (!path)
-    {
-        printf("minishell: %s: command not found\n", cmd->args[0]);
-        return (127);
-    }
+static void	close_other_fds(t_cmd *cmds, t_cmd *current)
+{
+	while (cmds)
+	{
+		if (cmds != current)
+		{
+			if (cmds->fd_in != STDIN_FILENO)
+				close(cmds->fd_in);
+			if (cmds->fd_out != STDOUT_FILENO)
+				close(cmds->fd_out);
+		}
+		cmds = cmds->next;
+	}
+}
 
+static void	child_process(t_cmd *cmd, t_cmd *cmds, char ***envp)
+{
+	char	*path;
+
+	close_other_fds(cmds, cmd);
+	apply_redirections(cmd);
+	if (is_builtin(cmd->args[0]))
+	{
+		cmd->fd_out = STDOUT_FILENO;
+		cmd->fd_in = STDIN_FILENO;
+		exit(execute_builtin(cmd, envp));
+	}
+	path = find_cmd_path(cmd->args[0], *envp);
+	if (!path)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		exit(127);
+	}
+	execve(path, cmd->args, *envp);
+	perror("execve");
+	free(path);
+	exit(126);
+}
+
+static void	close_and_reset_fds(t_cmd *cmd)
+{
+	if (cmd->fd_in != STDIN_FILENO)
+	{
+		close(cmd->fd_in);
+		cmd->fd_in = STDIN_FILENO;
+	}
+	if (cmd->fd_out != STDOUT_FILENO)
+	{
+		close(cmd->fd_out);
+		cmd->fd_out = STDOUT_FILENO;
+	}
+}
+
+int	execute_cmd(t_cmd *cmd, char **envp)
+{
+	pid_t	pid;
+	int		status;
+	char	*path;
+
+	path = find_cmd_path(cmd->args[0], envp);
+	if (!path)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		return (127);
+	}
 	pid = fork();
 	if (pid == -1)
-    {
-        perror("fork");
-        free(path);
-        return (1);
-    }
-	
-	if (pid == 0)	
 	{
+		perror("fork");
+		free(path);
+		return (1);
+	}
+	if (pid == 0)
+	{
+		apply_redirections(cmd);
 		execve(path, cmd->args, envp);
 		perror("execve");
 		free(path);
 		exit(127);
 	}
-
 	free(path);
 	waitpid(pid, &status, 0);
-
-	 if (WIFEXITED(status))
-        return (WEXITSTATUS(status));
-
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (1);
+}
+
+void	execute_pipeline(t_cmd *cmds, char ***envp)
+{
+	t_cmd	*cmd;
+	pid_t	last_pid;
+	int		status;
+
+	cmd = cmds;
+	last_pid = -1;
+	while (cmd)
+	{
+		if (cmd->invalid || !cmd->args || !cmd->args[0])
+		{
+			close_and_reset_fds(cmd);
+			cmd = cmd->next;
+			continue ;
+		}
+		if (!cmds->next && is_builtin(cmd->args[0]))
+		{
+			g_exit_status = execute_builtin(cmd, envp);
+			close_and_reset_fds(cmd);
+			cmd = cmd->next;
+			continue ;
+		}
+		last_pid = fork();
+		if (last_pid == -1)
+		{
+			perror("fork");
+			close_and_reset_fds(cmd);
+			cmd = cmd->next;
+			continue ;
+		}
+		if (last_pid == 0)
+			child_process(cmd, cmds, envp);
+		close_and_reset_fds(cmd);
+		cmd = cmd->next;
+	}
+	if (last_pid > 0)
+	{
+		waitpid(last_pid, &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_exit_status = 128 + WTERMSIG(status);
+	}
+	while (wait(NULL) > 0)
+		;
 }

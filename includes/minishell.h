@@ -122,8 +122,6 @@ void	open_output_file(t_cmd *node, char *filename, t_token_type type);
 void	open_input_file(t_cmd *node, char *path, t_token_type type);
 void	handle_redirections(t_cmd *node, t_token **tokens);
 
-<<<<<<< HEAD
-
 //handle_errors.c
 void	syntax_error_message(char *token_value);
 void	set_error(const char *s, t_cmd *node, int status_error);
@@ -136,10 +134,10 @@ void	process_all_heredocs(t_token *tokens);
 //copy_environment.c
 int		env_size(char **envp);
 char	**copy_environment(char **envp);
-#endif
-=======
+
 //executor.c
 int		execute_cmd(t_cmd *cmd, char **envp);
+void	execute_pipeline(t_cmd *cmds, char ***envp);
 
 //builtins
 int		is_builtin(const char *cmd);
@@ -163,4 +161,3 @@ char	*get_dir(char *path, char *cmd);
 char	*find_cmd_path(char *cmd, char **envp);
 
 #endif
->>>>>>> feature/exec
