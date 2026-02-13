@@ -87,6 +87,12 @@ int	execute_cmd(t_cmd *cmd, char **envp)
 	int		status;
 	char	*path;
 
+	if (!cmd || cmd->invalid || !cmd->args || !cmd->args[0])
+	{
+		if (cmd)
+			close_and_reset_fds(cmd);
+		return (g_exit_status);
+	}
 	path = find_cmd_path(cmd->args[0], envp);
 	if (!path)
 	{
